@@ -1,0 +1,66 @@
+.overlay {
+  position: absolute;
+  top: clamp(0.7rem, 1.7vw, 1.15rem);
+  left: clamp(0.7rem, 1.7vw, 1.15rem);
+  z-index: 30;
+  width: min(360px, calc(100% - 1.6rem));
+  max-height: calc(100% - 2rem);
+  overflow-y: auto;
+  border-radius: var(--r-md);
+  padding: 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--sage-dim);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--sage-faint);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+}
+
+.close:hover {
+  color: var(--bone);
+}
+
+.group {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.groupTitle {
+  margin-bottom: 0.3rem;
+  color: var(--bone);
+  overflow-wrap: anywhere;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.row span:last-child {
+  color: var(--mist);
+  text-align: right;
+  overflow-wrap: anywhere;
+}

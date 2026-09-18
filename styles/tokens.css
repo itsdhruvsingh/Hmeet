@@ -1,0 +1,62 @@
+:root {
+  --abyss: #04120f;
+  --forest: #071d18;
+  --emerald-900: #0a2b25;
+  --emerald-800: #0f3d34;
+  --emerald-700: #134e43;
+  --emerald-600: #1a6355;
+
+  --bone: #f7f6f1;
+  --mist: #e6f0e9;
+  --sage: #b6cbc2;
+  --sage-dim: #85a096;
+  --sage-faint: #5d7871;
+
+  --gold: #c8a96a;
+  --gold-lit: #e2c894;
+  --gold-deep: #a6884a;
+  --gold-veil: rgba(200, 169, 106, 0.1);
+  --jade: #7fb3a4;
+  --rose: #d98a72;
+
+  --display: var(--font-display), 'Cormorant Garamond', 'Times New Roman', serif;
+  --ui: var(--font-ui), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: var(--font-mono), ui-monospace, 'SF Mono', monospace;
+  --deva: 'Noto Sans Devanagari', 'Nirmala UI', 'Kohinoor Devanagari', var(--ui);
+
+  --pane-1: rgba(255, 255, 255, 0.042);
+  --pane-2: rgba(255, 255, 255, 0.062);
+  --pane-3: rgba(255, 255, 255, 0.085);
+  --pane-sunk: rgba(4, 18, 15, 0.42);
+
+  --blur-1: blur(18px) saturate(150%);
+  --blur-2: blur(28px) saturate(165%);
+  --blur-3: blur(40px) saturate(180%);
+
+  --hairline: rgba(255, 255, 255, 0.1);
+
+  --sheen-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+  --sheen-soft: inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
+
+  --cast-1: 0 1px 2px rgba(2, 10, 8, 0.32), 0 4px 10px -4px rgba(2, 10, 8, 0.38);
+  --cast-2:
+    0 1px 2px rgba(2, 10, 8, 0.34), 0 8px 22px -8px rgba(2, 10, 8, 0.46),
+    0 22px 44px -22px rgba(2, 10, 8, 0.58);
+  --cast-3:
+    0 2px 4px rgba(2, 10, 8, 0.36), 0 14px 34px -10px rgba(2, 10, 8, 0.52),
+    0 38px 72px -28px rgba(2, 10, 8, 0.68);
+
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 30px;
+  --r-pill: 999px;
+
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
+  --t-fast: 160ms var(--ease-out);
+  --t-base: 280ms var(--ease-soft);
+
+  --lk-grid-gap: 0.85rem;
+}

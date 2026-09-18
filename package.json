@@ -1,0 +1,43 @@
+{
+  "name": "hainameet",
+  "version": "1.6.1",
+  "private": true,
+  "description": "Hainameet is a video calling room with a consensus button. Ask everyone at once, settle it in ten seconds, keep the receipts.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,md,json}\"",
+    "format:write": "prettier --write \"**/*.{ts,tsx,css,md,json}\""
+  },
+  "dependencies": {
+    "@livekit/components-react": "2.9.10",
+    "@livekit/components-styles": "1.1.6",
+    "@livekit/krisp-noise-filter": "0.3.0",
+    "@livekit/track-processors": "^0.5.4",
+    "livekit-client": "2.13.7",
+    "livekit-server-sdk": "2.13.0",
+    "next": "15.2.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.31",
+    "@types/react": "18.3.23",
+    "@types/react-dom": "18.3.7",
+    "eslint": "9.29.0",
+    "eslint-config-next": "15.3.3",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.15.9"
+}
