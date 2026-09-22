@@ -25,7 +25,7 @@ No agenda docs. No "let's take this offline". No follow-up email asking what was
 | Step         | What happens                                                                                                                      |
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
 | **Ask**      | One button, or `Ctrl/Cmd + Shift + H`. A question is optional. Windows of 10s, 20s or 45s.                                        |
-| **Answer**   | Three choices: `HAINA` (yeah obviously), `NA` (absolutely not), `PATA NAHI` (no thoughts).                                        |
+| **Answer**   | Three choices: `Haina` (yes, agreed), `Na` (no, I disagree), `Pata nahi` (no opinion).                                            |
 | **Verdict**  | Computed the moment the window closes, identical on every client, with commentary.                                                |
 | **Receipts** | Every closed poll is filed with a timestamp, the tally and who asked. Copy them all as plain text, in the room or on the way out. |
 
@@ -158,7 +158,7 @@ Read this before pointing it at anything that matters.
 - End-to-end encryption is opt-in and lives entirely in the URL fragment (`#your-passphrase`).
   Fragments are never sent to the server. Share the link over a channel you trust, or the
   encryption is decorative.
-- E2EE disables server-side recording and forces a codec fallback off AV1 and VP9.
+- E2EE forces a codec fallback off AV1 and VP9, and rules out server-side recording.
 - Tokens live for five minutes and only carry a grant for the one room requested.
 
 ## Contributing

@@ -5,6 +5,7 @@ import panels from '@/styles/panels.module.css';
 import roomStyles from '@/styles/room.module.css';
 import { Panel } from '@/components/room/Panel';
 import { Icon } from '@/components/ui/Icon';
+import { useCopy } from '@/hooks/useCopy';
 import { clock } from '@/lib/client-utils';
 import { CHOICE_META, receiptsAsText, type Receipt } from '@/lib/haina';
 
@@ -19,17 +20,7 @@ export function ReceiptsPanel({
   onClear: () => void;
   onClose: () => void;
 }) {
-  const [copied, setCopied] = React.useState(false);
-
-  const copyAll = async () => {
-    try {
-      await navigator.clipboard.writeText(receiptsAsText(receipts, roomName));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      setCopied(false);
-    }
-  };
+  const { copied, copy } = useCopy();
 
   return (
     <Panel
@@ -37,7 +28,12 @@ export function ReceiptsPanel({
       onClose={onClose}
       footer={
         <div className={panels.footRow}>
-          <button type="button" className="btn" onClick={copyAll} disabled={receipts.length === 0}>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => copy(receiptsAsText(receipts, roomName), 'receipts')}
+            disabled={receipts.length === 0}
+          >
             <Icon name={copied ? 'check' : 'copy'} size={15} />
             {copied ? 'Copied' : 'Copy all'}
           </button>

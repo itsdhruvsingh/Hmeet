@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ConnectionState } from 'livekit-client';
+import { ConnectionQuality, ConnectionState } from 'livekit-client';
 import {
   RoomAudioRenderer,
   useChat,
@@ -25,17 +25,24 @@ import { Wordmark } from '@/components/ui/Wordmark';
 import { StampLayer } from '@/components/room/StampLayer';
 import type { PanelKey } from '@/components/room/panels';
 import { useHaina } from '@/hooks/useHaina';
+import { useLinkQuality } from '@/hooks/useLinkQuality';
+import { useCopy } from '@/hooks/useCopy';
 import type { Receipt } from '@/lib/haina';
 
 const STATE_LABEL: Record<string, string> = {
   connected: 'Live',
+  weak: 'Weak network',
   connecting: 'Connecting',
   reconnecting: 'Reconnecting',
   disconnected: 'Dropped',
 };
 
-function stateKey(state: ConnectionState): string {
-  if (state === ConnectionState.Connected) return 'connected';
+function stateKey(state: ConnectionState, quality: ConnectionQuality): string {
+  if (state === ConnectionState.Connected) {
+    return quality === ConnectionQuality.Poor || quality === ConnectionQuality.Lost
+      ? 'weak'
+      : 'connected';
+  }
   if (state === ConnectionState.Reconnecting) return 'reconnecting';
   if (state === ConnectionState.Connecting) return 'connecting';
   return 'disconnected';
@@ -54,11 +61,12 @@ export function RoomShell({
   const recording = useIsRecording();
   const chat = useChat();
   const haina = useHaina();
+  const quality = useLinkQuality();
 
   const [panel, setPanel] = React.useState<PanelKey>(null);
   const [askOpen, setAskOpen] = React.useState(false);
   const [seen, setSeen] = React.useState(0);
-  const [copied, setCopied] = React.useState(false);
+  const { copied, copy } = useCopy();
 
   React.useEffect(() => {
     if (panel === 'chat') setSeen(chat.chatMessages.length);
@@ -72,17 +80,7 @@ export function RoomShell({
     onReceipts?.(haina.receipts);
   }, [haina.receipts, onReceipts]);
 
-  const copyInvite = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      setCopied(false);
-    }
-  };
-
-  const key = stateKey(connection);
+  const key = stateKey(connection, quality);
 
   return (
     <div className={styles.room}>
@@ -98,7 +96,7 @@ export function RoomShell({
           <button
             type="button"
             className={styles.chip}
-            onClick={copyInvite}
+            onClick={() => copy(window.location.href, 'invite')}
             title="Copy invite link"
           >
             <Icon name={copied ? 'check' : 'link'} size={13} />

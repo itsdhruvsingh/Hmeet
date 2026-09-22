@@ -28,7 +28,7 @@ export default async function Page({
     notFound();
   }
 
-  const codec = typeof query.codec === 'string' && isVideoCodec(query.codec) ? query.codec : 'vp9';
+  const codec = typeof query.codec === 'string' && isVideoCodec(query.codec) ? query.codec : 'vp8';
 
   return (
     <RoomClient roomName={slug} region={query.region} hq={query.hq === 'true'} codec={codec} />

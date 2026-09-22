@@ -5,6 +5,7 @@ import Link from 'next/link';
 import styles from '@/styles/leave.module.css';
 import { Icon } from '@/components/ui/Icon';
 import { Wordmark } from '@/components/ui/Wordmark';
+import { useCopy } from '@/hooks/useCopy';
 import { clock } from '@/lib/client-utils';
 import { receiptsAsText, type Receipt } from '@/lib/haina';
 
@@ -17,15 +18,7 @@ export function LeaveScreen({
   receipts: Receipt[];
   onRejoin: () => void;
 }) {
-  const [copied, setCopied] = React.useState(false);
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(receiptsAsText(receipts, roomName));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {}
-  };
+  const { copied, copy } = useCopy();
 
   return (
     <div className={styles.page}>
@@ -42,7 +35,11 @@ export function LeaveScreen({
           <div className={styles.summary}>
             <div className={styles.summaryHead}>
               <span className={styles.summaryTitle}>Receipts · {receipts.length}</span>
-              <button type="button" className={`btn btn-quiet ${styles.copyBtn}`} onClick={copy}>
+              <button
+                type="button"
+                className={`btn btn-quiet ${styles.copyBtn}`}
+                onClick={() => copy(receiptsAsText(receipts, roomName), 'receipts')}
+              >
                 <Icon name={copied ? 'check' : 'copy'} size={13} />
                 {copied ? 'Copied' : 'Copy'}
               </button>

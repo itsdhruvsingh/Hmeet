@@ -1,10 +1,13 @@
 import {
+  AudioPresets,
   VideoPresets,
   type ExternalE2EEKeyProvider,
+  type RoomConnectOptions,
   type RoomOptions,
   type TrackPublishDefaults,
   type VideoCaptureOptions,
   type VideoCodec,
+  type VideoPreset,
 } from 'livekit-client';
 import { isLowPowerDevice } from './client-utils';
 import type { JoinChoices, RoomOptionsFromUrl } from './types';
@@ -15,41 +18,65 @@ export type E2EESetup = {
   worker?: Worker;
 };
 
+type Ladder = { capture: VideoPreset; layers: VideoPreset[] };
+
+const FRUGAL: Ladder = {
+  capture: VideoPresets.h360,
+  layers: [VideoPresets.h180],
+};
+
+const STANDARD: Ladder = {
+  capture: VideoPresets.h540,
+  layers: [VideoPresets.h180, VideoPresets.h360],
+};
+
+const HIGH: Ladder = {
+  capture: VideoPresets.h1080,
+  layers: [VideoPresets.h360, VideoPresets.h720],
+};
+
+function pickLadder(hq: boolean): Ladder {
+  if (isLowPowerDevice()) return FRUGAL;
+  return hq ? HIGH : STANDARD;
+}
+
 export function buildRoomOptions(
   choices: JoinChoices,
   wanted: RoomOptionsFromUrl,
   e2ee?: E2EESetup,
 ): RoomOptions {
-  let videoCodec: VideoCodec | undefined = wanted.codec ?? 'vp9';
+  const ladder = pickLadder(wanted.hq);
+
+  let videoCodec: VideoCodec | undefined = wanted.codec;
   if (e2ee?.enabled && (videoCodec === 'av1' || videoCodec === 'vp9')) {
     videoCodec = undefined;
   }
 
   const videoCaptureDefaults: VideoCaptureOptions = {
     deviceId: choices.videoDeviceId,
-    resolution: wanted.hq ? VideoPresets.h2160 : VideoPresets.h720,
+    resolution: ladder.capture.resolution,
   };
 
   const publishDefaults: TrackPublishDefaults = {
-    dtx: false,
+    audioPreset: AudioPresets.speech,
+    dtx: true,
     red: !e2ee?.enabled,
+    simulcast: true,
     videoCodec,
-    videoSimulcastLayers: wanted.hq
-      ? [VideoPresets.h1080, VideoPresets.h720]
-      : [VideoPresets.h540, VideoPresets.h216],
+    videoEncoding: ladder.capture.encoding,
+    videoSimulcastLayers: ladder.layers,
   };
-
-  if (isLowPowerDevice()) {
-    videoCaptureDefaults.resolution = VideoPresets.h360;
-    publishDefaults.simulcast = false;
-    publishDefaults.scalabilityMode = 'L1T3';
-  }
 
   return {
     videoCaptureDefaults,
     publishDefaults,
-    audioCaptureDefaults: { deviceId: choices.audioDeviceId },
-    adaptiveStream: { pixelDensity: 'screen' },
+    audioCaptureDefaults: {
+      deviceId: choices.audioDeviceId,
+      autoGainControl: true,
+      echoCancellation: true,
+      noiseSuppression: true,
+    },
+    adaptiveStream: true,
     dynacast: true,
     e2ee:
       e2ee?.enabled && e2ee.worker
@@ -57,3 +84,10 @@ export function buildRoomOptions(
         : undefined,
   };
 }
+
+export const connectOptions: RoomConnectOptions = {
+  autoSubscribe: true,
+  maxRetries: 6,
+  peerConnectionTimeout: 25_000,
+  websocketTimeout: 25_000,
+};

@@ -7,7 +7,7 @@ import { PreJoinStage } from '@/components/prejoin/PreJoinStage';
 import { LeaveScreen } from '@/components/room/LeaveScreen';
 import { RoomShell } from '@/components/room/RoomShell';
 import { useE2EE } from '@/hooks/useE2EE';
-import { buildRoomOptions } from '@/lib/room-options';
+import { buildRoomOptions, connectOptions } from '@/lib/room-options';
 import type { ConnectionDetails, JoinChoices } from '@/lib/types';
 import type { Receipt } from '@/lib/haina';
 
@@ -65,7 +65,7 @@ export function RoomClient({
           await next.setE2EEEnabled(true);
         }
 
-        await next.connect(details.serverUrl, details.participantToken);
+        await next.connect(details.serverUrl, details.participantToken, connectOptions);
 
         if (choices.audioEnabled) {
           await next.localParticipant.setMicrophoneEnabled(true).catch(() => undefined);

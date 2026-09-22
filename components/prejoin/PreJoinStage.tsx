@@ -8,6 +8,7 @@ import { MicMeter } from '@/components/prejoin/MicMeter';
 import { deviceLabel, useMediaDevices } from '@/hooks/useMediaDevices';
 import { usePreviewStream } from '@/hooks/usePreviewStream';
 import { useStoredIdentity } from '@/hooks/useStoredIdentity';
+import { useCopy } from '@/hooks/useCopy';
 import { initialsOf } from '@/lib/client-utils';
 import { prettifySlug } from '@/lib/room-names';
 import type { JoinChoices } from '@/lib/types';
@@ -30,7 +31,7 @@ export function PreJoinStage({
   const [micOn, setMicOn] = React.useState(true);
   const [cameraId, setCameraId] = React.useState('');
   const [micId, setMicId] = React.useState('');
-  const [copied, setCopied] = React.useState(false);
+  const { copied, copy } = useCopy();
 
   const { devices: cameras, refresh: refreshCameras } = useMediaDevices('videoinput');
   const { devices: mics, refresh: refreshMics } = useMediaDevices('audioinput');
@@ -56,14 +57,6 @@ export function PreJoinStage({
     element.srcObject = preview.stream;
     if (preview.stream) element.play().catch(() => undefined);
   }, [preview.stream]);
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {}
-  };
 
   const enter = (event: React.FormEvent) => {
     event.preventDefault();
@@ -141,7 +134,11 @@ export function PreJoinStage({
             <h1 className={styles.roomName}>{prettifySlug(roomName)}</h1>
             <div className={styles.roomMeta}>
               <span className={styles.code}>{roomName}</span>
-              <button type="button" className={`btn btn-quiet ${styles.copy}`} onClick={copyLink}>
+              <button
+                type="button"
+                className={`btn btn-quiet ${styles.copy}`}
+                onClick={() => copy(window.location.href, 'invite')}
+              >
                 <Icon name={copied ? 'check' : 'copy'} size={13} />
                 {copied ? 'Copied' : 'Copy invite'}
               </button>

@@ -65,8 +65,12 @@
     var(--sheen-soft);
 }
 
-.status[data-state='reconnecting'] {
+.status[data-state='reconnecting'],
+.status[data-state='weak'] {
   color: #f0d3ab;
+  box-shadow:
+    inset 0 0 0 1px rgba(240, 211, 171, 0.3),
+    var(--sheen-soft);
 }
 
 .status[data-state='disconnected'] {

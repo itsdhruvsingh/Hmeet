@@ -1,9 +1,5 @@
 export const ROOM_SLUG_PATTERN = /^[a-z0-9]{1,24}(?:-[a-z0-9]{1,24}){0,5}$/;
 
-export function encodePassphrase(passphrase: string) {
-  return encodeURIComponent(passphrase);
-}
-
 export function decodePassphrase(encoded: string) {
   return decodeURIComponent(encoded);
 }
